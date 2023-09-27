@@ -1,4 +1,5 @@
 ﻿using Back.Clases;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,21 @@ namespace Back.ClasesData
 {
     public class UsuarioData
     {
-        private readonly ApplicationDbContext _context;
+        private static readonly ApplicationDbContext _context;
 
-        public UsuarioData ( ApplicationDbContext context )
+        public static DbSet<Usuario> GetUsuarios()
         {
-            _context = context;
+            ApplicationDbContext context = _context;
+            return _context.usuarios;
         }
 
-        public void AgregarUsuario ( Usuario usuarioNuevo )
+        public static void AgregarUsuario(Usuario usuarioNuevo)
         {
             _context.usuarios.Add (usuarioNuevo);
             _context.SaveChanges ();
         }
-        public void EliminarUsuario ( int id )
+
+        public static void EliminarUsuario(int id)
         {
             var UsuarioEncontrado = _context.usuarios.Find (id);
             if (UsuarioEncontrado != null)
@@ -31,9 +34,9 @@ namespace Back.ClasesData
             }
         }
 
-        public void ModificarUsuario ( Usuario UsuarioModificado )
+        public static void ModificarUsuario(Usuario UsuarioModificado)
         {
-            var UsuarioEncontrado = _context.usuarios.Find (UsuarioModificado.id);
+            var UsuarioEncontrado = _context.usuarios.Find(UsuarioModificado.id);
             if (UsuarioEncontrado != null)
             {
                 UsuarioEncontrado.Contraseña = UsuarioModificado.id.ToString ();
