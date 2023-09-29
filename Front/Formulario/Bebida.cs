@@ -21,5 +21,10 @@ namespace Front.Formulario
         {
 
         }
+
+        private void Bebida_Load ( object sender, EventArgs e )
+        {
+
+        }
     }
 }

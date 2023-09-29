@@ -16,5 +16,10 @@ namespace Front.Formulario
         {
             InitializeComponent ();
         }
+
+        private void Reportes_Load ( object sender, EventArgs e )
+        {
+
+        }
     }
 }
