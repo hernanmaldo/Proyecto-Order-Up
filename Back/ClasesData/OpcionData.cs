@@ -1,4 +1,5 @@
 ﻿using Back.Clases;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,21 @@ namespace Back.ClasesData
 {
     public class OpcionData
     {
-        private readonly ApplicationDbContext _context;
+        private static readonly ApplicationDbContext _context;
 
-        public OpcionData ( ApplicationDbContext context )
+        public static DbSet<Opcion> GetOpcion()
         {
-            _context = context;
+            ApplicationDbContext context = _context;
+            return _context.opciones;
         }
 
-        public void AgregarOpcion ( Opcion opcionNuevo )
+        public static void AgregarOpcion(Opcion opcionNuevo)
         {
             _context.opciones.Add (opcionNuevo);
             _context.SaveChanges ();
         }
-        public void EliminarOpcion ( int IdOpcion )
+
+        public static void EliminarOpcion(int IdOpcion)
         {
             var OpcionEncontrada = _context.opciones.Find (IdOpcion);
             if (OpcionEncontrada != null)

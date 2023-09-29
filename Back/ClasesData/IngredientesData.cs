@@ -1,4 +1,5 @@
 ﻿using Back.Clases;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,20 +10,21 @@ namespace Back.ClasesData
 {
     public class IngredientesData
     {
-        private readonly ApplicationDbContext _context;
+        private static readonly ApplicationDbContext _context;
 
-        public IngredientesData ( ApplicationDbContext context )
+        public static DbSet<Ingredientes> GetIngredientes()
         {
-            _context = context;
+            ApplicationDbContext context = _context;
+            return _context.ingredientes;
         }
 
-        public void AgregarIngrediente ( Ingredientes ingredienteNuevo )
+        public static void AgregarIngrediente(Ingredientes ingredienteNuevo)
         {
             _context.ingredientes.Add (ingredienteNuevo);
             _context.SaveChanges ();
         }
 
-        public void EliminarIngrediente ( int id )
+        public static void EliminarIngrediente(int id)
         {
             var IngredienteEncontrado = _context.ingredientes.Find (id);
             if (IngredienteEncontrado != null)
@@ -32,7 +34,7 @@ namespace Back.ClasesData
             }
         }
 
-        public void ModificarProducto ( Ingredientes ingredienteModificado )
+        public static void ModificarIngrediente(Ingredientes ingredienteModificado)
         {
             var IngredienteEncontrado = _context.ingredientes.Find (ingredienteModificado.IdIngredientes);
             if (IngredienteEncontrado != null)

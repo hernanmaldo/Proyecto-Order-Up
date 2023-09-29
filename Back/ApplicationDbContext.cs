@@ -20,7 +20,5 @@ namespace Back
         public DbSet<Usuario> usuarios { get; set; }
 
 
-
-
     }
 }
