@@ -1,4 +1,5 @@
 ﻿using Back.Clases;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,21 @@ namespace Back.ClasesData
 {
     public class PedidoData
     {
-        private readonly ApplicationDbContext _context;
+        private static readonly ApplicationDbContext _context;
 
-        public PedidoData ( ApplicationDbContext context )
+        public static DbSet<Pedido> GetPedido()
         {
-            _context = context;
+            ApplicationDbContext context = _context;
+            return _context.pedidos;
         }
 
-        public void AgregarPedido ( Pedido pedidoNuevo )
+        public static void AgregarPedido(Pedido pedidoNuevo)
         {
             _context.pedidos.Add (pedidoNuevo);
             _context.SaveChanges ();
         }
-        public void EliminarPedido ( int IdPedido )
+
+        public static void EliminarPedido(int IdPedido)
         {
             var PedidoEncontrado = _context.pedidos.Find (IdPedido);
             if (PedidoEncontrado != null)

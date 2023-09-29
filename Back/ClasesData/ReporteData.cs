@@ -1,4 +1,5 @@
 ﻿using Back.Clases;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,21 @@ namespace Back.ClasesData
     public class ReporteData
     {
 
-        private readonly ApplicationDbContext _context;
+        private static readonly ApplicationDbContext _context;
 
-        public ReporteData (ApplicationDbContext context)
+        public static DbSet<Reporte> GetReporte()
         {
-            _context = context;
+            ApplicationDbContext context = _context;
+            return _context.reporte;
         }
 
-        public void AgregarReporte ( Reporte reporteNuevo )
+        public static void AgregarReporte(Reporte reporteNuevo)
         {
             _context.reporte.Add (reporteNuevo);
             _context.SaveChanges();
         }
-        public void EliminarReporte ( int IdReporte )
+
+        public static void EliminarReporte(int IdReporte)
         {
             var ReporteEncontrado = _context.reporte.Find (IdReporte);
             if (ReporteEncontrado != null)
