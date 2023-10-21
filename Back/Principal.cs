@@ -2,7 +2,7 @@
 {
     public class Principal
     {
-        ApplicationDbContext context = new ApplicationDbContext ();
+        public static ApplicationDbContext context = new ApplicationDbContext ();
 
     }
 }
