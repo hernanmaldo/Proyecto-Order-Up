@@ -9,8 +9,8 @@ namespace Back.Clases
 {
     public class OpcionPedido
     {
-
         [Key]
+        public int OcionPedido { get; set; }    
         public int IdPedido { get; set; }
         public int IdOpcion { get; set; }
         public Opcion Opcion { get; set; }

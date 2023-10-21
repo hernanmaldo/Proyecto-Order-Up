@@ -4,9 +4,9 @@ using Back;
 
 namespace Front
 {
-    public partial class Form1 : Form
+    public partial class InicioSesion : Form
     {
-        public Form1()
+        public InicioSesion()
         {
             InitializeComponent();
         }
@@ -27,6 +27,7 @@ namespace Front
         {
             ApplicationDbContext context = Principal.context;
             
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
         }
     }

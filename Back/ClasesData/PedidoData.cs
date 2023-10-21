@@ -10,7 +10,7 @@ namespace Back.ClasesData
 {
     public class PedidoData
     {
-        private static readonly ApplicationDbContext _context;
+        private static readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         public static DbSet<Pedido> GetPedido()
         {

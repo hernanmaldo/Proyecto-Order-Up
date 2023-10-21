@@ -19,6 +19,8 @@ namespace Back.Clases
 
         public List<Ingredientes> Ingredientes { get; set; }
 
+        public ICollection<OpcionPedido> Pedidos { get; set; }
+
 
 
 

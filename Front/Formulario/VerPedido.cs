@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Back;
+using Back.Clases;
+using Back.ClasesData;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +15,26 @@ namespace Front.Formulario
 {
     public partial class VerPedido : Form
     {
-        public VerPedido ( )
+        public VerPedido()
         {
-            InitializeComponent ();
+            InitializeComponent();
+        }
+
+        public List<OpcionPedido> opcionPedidos = new List<OpcionPedido>();
+        public Pedido pedido = new Pedido
+        {
+      
+            Fecha = DateTime.Now,
+            Cargado = true,
+       
+        };
+        private void VerPedido_Load(object sender, EventArgs e)
+        {
+             
+             PedidoData.AgregarPedido(pedido);
+          
+            
+
         }
     }
 }
