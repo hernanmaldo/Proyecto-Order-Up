@@ -12,16 +12,19 @@ namespace Back.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ingredientesOpciones",
+                name: "opciones",
                 columns: table => new
                 {
                     IdOpcion = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdIngredientes = table.Column<int>(type: "int", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ingredientesOpciones", x => x.IdOpcion);
+                    table.PrimaryKey("PK_opciones", x => x.IdOpcion);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,6 +40,27 @@ namespace Back.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_usuarios", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ingredientes",
+                columns: table => new
+                {
+                    IdIngredientes = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OpcionIdOpcion = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ingredientes", x => x.IdIngredientes);
+                    table.ForeignKey(
+                        name: "FK_ingredientes_opciones_OpcionIdOpcion",
+                        column: x => x.OpcionIdOpcion,
+                        principalTable: "opciones",
+                        principalColumn: "IdOpcion");
                 });
 
             migrationBuilder.CreateTable(
@@ -61,6 +85,34 @@ namespace Back.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ingredientesOpciones",
+                columns: table => new
+                {
+                    IdIngrentesOpcion = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdOpcion = table.Column<int>(type: "int", nullable: false),
+                    IdIngredientes = table.Column<int>(type: "int", nullable: false),
+                    opcionIdOpcion = table.Column<int>(type: "int", nullable: false),
+                    ingredientesIdIngredientes = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ingredientesOpciones", x => x.IdIngrentesOpcion);
+                    table.ForeignKey(
+                        name: "FK_ingredientesOpciones_ingredientes_ingredientesIdIngredientes",
+                        column: x => x.ingredientesIdIngredientes,
+                        principalTable: "ingredientes",
+                        principalColumn: "IdIngredientes",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ingredientesOpciones_opciones_opcionIdOpcion",
+                        column: x => x.opcionIdOpcion,
+                        principalTable: "opciones",
+                        principalColumn: "IdOpcion",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "pedidos",
                 columns: table => new
                 {
@@ -68,7 +120,6 @@ namespace Back.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Cargado = table.Column<bool>(type: "bit", nullable: false),
-                    cantidad = table.Column<int>(type: "int", nullable: false),
                     ReporteIdReporte = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -82,26 +133,31 @@ namespace Back.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "opciones",
+                name: "opcionesPedidos",
                 columns: table => new
                 {
-                    IdOpcion = table.Column<int>(type: "int", nullable: false)
+                    OcionPedido = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Cantidad = table.Column<int>(type: "int", nullable: false),
-                    PedidoIdPedido = table.Column<int>(type: "int", nullable: true)
+                    IdPedido = table.Column<int>(type: "int", nullable: false),
+                    IdOpcion = table.Column<int>(type: "int", nullable: false),
+                    OpcionIdOpcion = table.Column<int>(type: "int", nullable: false),
+                    PedidoIdPedido = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_opciones", x => x.IdOpcion);
+                    table.PrimaryKey("PK_opcionesPedidos", x => x.OcionPedido);
                     table.ForeignKey(
-                        name: "FK_opciones_pedidos_PedidoIdPedido",
+                        name: "FK_opcionesPedidos_opciones_OpcionIdOpcion",
+                        column: x => x.OpcionIdOpcion,
+                        principalTable: "opciones",
+                        principalColumn: "IdOpcion",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_opcionesPedidos_pedidos_PedidoIdPedido",
                         column: x => x.PedidoIdPedido,
                         principalTable: "pedidos",
-                        principalColumn: "IdPedido");
+                        principalColumn: "IdPedido",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,63 +187,20 @@ namespace Back.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ingredientes",
-                columns: table => new
-                {
-                    IdIngredientes = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OpcionIdOpcion = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ingredientes", x => x.IdIngredientes);
-                    table.ForeignKey(
-                        name: "FK_ingredientes_opciones_OpcionIdOpcion",
-                        column: x => x.OpcionIdOpcion,
-                        principalTable: "opciones",
-                        principalColumn: "IdOpcion");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "opcionesPedidos",
-                columns: table => new
-                {
-                    IdPedido = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdOpcion = table.Column<int>(type: "int", nullable: false),
-                    OpcionIdOpcion = table.Column<int>(type: "int", nullable: false),
-                    PedidoIdPedido = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_opcionesPedidos", x => x.IdPedido);
-                    table.ForeignKey(
-                        name: "FK_opcionesPedidos_opciones_OpcionIdOpcion",
-                        column: x => x.OpcionIdOpcion,
-                        principalTable: "opciones",
-                        principalColumn: "IdOpcion",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_opcionesPedidos_pedidos_PedidoIdPedido",
-                        column: x => x.PedidoIdPedido,
-                        principalTable: "pedidos",
-                        principalColumn: "IdPedido",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_ingredientes_OpcionIdOpcion",
                 table: "ingredientes",
                 column: "OpcionIdOpcion");
 
             migrationBuilder.CreateIndex(
-                name: "IX_opciones_PedidoIdPedido",
-                table: "opciones",
-                column: "PedidoIdPedido");
+                name: "IX_ingredientesOpciones_ingredientesIdIngredientes",
+                table: "ingredientesOpciones",
+                column: "ingredientesIdIngredientes");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ingredientesOpciones_opcionIdOpcion",
+                table: "ingredientesOpciones",
+                column: "opcionIdOpcion");
 
             migrationBuilder.CreateIndex(
                 name: "IX_opcionesPedidos_OpcionIdOpcion",
@@ -224,9 +237,6 @@ namespace Back.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ingredientes");
-
-            migrationBuilder.DropTable(
                 name: "ingredientesOpciones");
 
             migrationBuilder.DropTable(
@@ -236,10 +246,13 @@ namespace Back.Migrations
                 name: "reportePedidos");
 
             migrationBuilder.DropTable(
-                name: "opciones");
+                name: "ingredientes");
 
             migrationBuilder.DropTable(
                 name: "pedidos");
+
+            migrationBuilder.DropTable(
+                name: "opciones");
 
             migrationBuilder.DropTable(
                 name: "reporte");

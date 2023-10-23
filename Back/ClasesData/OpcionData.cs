@@ -10,8 +10,7 @@ namespace Back.ClasesData
 {
     public class OpcionData
     {
-        private static readonly ApplicationDbContext _context;
-
+        public static ApplicationDbContext _context = Principal.context;
         public static DbSet<Opcion> GetOpcion()
         {
             ApplicationDbContext context = _context;
@@ -21,7 +20,7 @@ namespace Back.ClasesData
         public static void AgregarOpcion(Opcion opcionNuevo)
         {
             _context.opciones.Add (opcionNuevo);
-            _context.SaveChanges ();
+            _context.SaveChanges();
         }
 
         public static void EliminarOpcion(int IdOpcion)

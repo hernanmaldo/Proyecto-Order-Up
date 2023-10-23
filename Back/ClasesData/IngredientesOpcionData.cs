@@ -10,7 +10,7 @@ namespace Back.ClasesData
 {
     public class IngredientesOpcionData
     {
-        private static readonly ApplicationDbContext _context;
+        private static  ApplicationDbContext _context = Principal.context;
 
         public static DbSet<IngredientesOpcion> GetIngredientesOpcion()
         {

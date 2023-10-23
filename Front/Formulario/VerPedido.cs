@@ -32,9 +32,10 @@ namespace Front.Formulario
         {
              
              PedidoData.AgregarPedido(pedido);
-          
             
 
         }
+
+        
     }
 }

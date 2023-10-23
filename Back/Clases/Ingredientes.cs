@@ -12,10 +12,14 @@ namespace Back.Clases
     {
         [Key]
         public int IdIngredientes { get; set; }
+
+
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public decimal Precio { get; set; }
 
+       
+        public ICollection<Opcion> opciones { get; set; }   
 
 
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231021204805_HM-1")]
-    partial class HM1
+    [Migration("20231021232240_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,16 +56,29 @@ namespace Back.Migrations
 
             modelBuilder.Entity("Back.Clases.IngredientesOpcion", b =>
                 {
-                    b.Property<int>("IdOpcion")
+                    b.Property<int>("IdIngrentesOpcion")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOpcion"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdIngrentesOpcion"));
 
                     b.Property<int>("IdIngredientes")
                         .HasColumnType("int");
 
-                    b.HasKey("IdOpcion");
+                    b.Property<int>("IdOpcion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ingredientesIdIngredientes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("opcionIdOpcion")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdIngrentesOpcion");
+
+                    b.HasIndex("ingredientesIdIngredientes");
+
+                    b.HasIndex("opcionIdOpcion");
 
                     b.ToTable("ingredientesOpciones");
                 });
@@ -78,9 +91,6 @@ namespace Back.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOpcion"));
 
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -88,9 +98,6 @@ namespace Back.Migrations
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PedidoIdPedido")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
@@ -100,8 +107,6 @@ namespace Back.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdOpcion");
-
-                    b.HasIndex("PedidoIdPedido");
 
                     b.ToTable("opciones");
                 });
@@ -243,11 +248,23 @@ namespace Back.Migrations
                         .HasForeignKey("OpcionIdOpcion");
                 });
 
-            modelBuilder.Entity("Back.Clases.Opcion", b =>
+            modelBuilder.Entity("Back.Clases.IngredientesOpcion", b =>
                 {
-                    b.HasOne("Back.Clases.Pedido", null)
-                        .WithMany("OpcionesPedido")
-                        .HasForeignKey("PedidoIdPedido");
+                    b.HasOne("Back.Clases.Ingredientes", "ingredientes")
+                        .WithMany("ingredientesOpciones")
+                        .HasForeignKey("ingredientesIdIngredientes")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Back.Clases.Opcion", "opcion")
+                        .WithMany("ingredientesOpciones")
+                        .HasForeignKey("opcionIdOpcion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ingredientes");
+
+                    b.Navigation("opcion");
                 });
 
             modelBuilder.Entity("Back.Clases.OpcionPedido", b =>
@@ -259,7 +276,7 @@ namespace Back.Migrations
                         .IsRequired();
 
                     b.HasOne("Back.Clases.Pedido", "Pedido")
-                        .WithMany()
+                        .WithMany("Pedidos")
                         .HasForeignKey("PedidoIdPedido")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -304,16 +321,23 @@ namespace Back.Migrations
                     b.Navigation("reporte");
                 });
 
+            modelBuilder.Entity("Back.Clases.Ingredientes", b =>
+                {
+                    b.Navigation("ingredientesOpciones");
+                });
+
             modelBuilder.Entity("Back.Clases.Opcion", b =>
                 {
                     b.Navigation("Ingredientes");
 
                     b.Navigation("Pedidos");
+
+                    b.Navigation("ingredientesOpciones");
                 });
 
             modelBuilder.Entity("Back.Clases.Pedido", b =>
                 {
-                    b.Navigation("OpcionesPedido");
+                    b.Navigation("Pedidos");
                 });
 
             modelBuilder.Entity("Back.Clases.Reporte", b =>

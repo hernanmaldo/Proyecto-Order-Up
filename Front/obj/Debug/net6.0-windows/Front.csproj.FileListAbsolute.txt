@@ -90,3 +90,4 @@ C:\Users\herna\OneDrive\Documentos\GitHub\ProyectoOrderUp\Proyecto-Order-Up\Fron
 C:\Users\herna\OneDrive\Documentos\GitHub\ProyectoOrderUp\Proyecto-Order-Up\Front\bin\Debug\net6.0-windows\Back.pdb
 C:\Users\herna\OneDrive\Documentos\GitHub\ProyectoOrderUp\Proyecto-Order-Up\Front\obj\Debug\net6.0-windows\Front.csproj.CopyComplete
 C:\Users\herna\OneDrive\Documentos\GitHub\ProyectoOrderUp\Proyecto-Order-Up\Front\obj\Debug\net6.0-windows\Front.InicioSesion.resources
+C:\Users\herna\OneDrive\Documentos\GitHub\ProyectoOrderUp\Proyecto-Order-Up\Front\obj\Debug\net6.0-windows\Front.AltaIngredientes.resources
